@@ -26,10 +26,26 @@ img{
 }
 
 .brown{
-  background: linear-gradient(87.4deg, rgb(173, 131, 101) 1.9%, rgb(181, 124, 89) 49.7%, rgb(184, 155, 110) 100.5%);
+  background-image: linear-gradient(87.4deg, rgb(173, 131, 101) 1.9%, rgb(181, 124, 89) 49.7%, rgb(184, 155, 110) 100.5%);
 }
 
 .white{
-  background-color: #ffffff;
-background-image: linear-gradient(147deg, #fafdff 0%, #dce2e8 74%);
+background-image: linear-gradient(147deg, #fafdff 50%, #dce2e8 74%);
 }
+
+.blue{
+  border: 1px solid #4089ff;
+  background-image: radial-gradient(#a3c6ff ,#a3c6ff , #4089ff 88%);
+}
+
+.red{
+  border: 1px solid #ff4040;
+  background-image: radial-gradient(#ff9e9e ,#ff9e9e , #ff4040 88%);
+}
+
+.green{
+  border: 1px solid #31c436;
+  background-image: radial-gradient(#b3ffb5 ,#b3ffb5 , #31c436 88%);
+}
+
+
