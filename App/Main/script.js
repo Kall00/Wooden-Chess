@@ -62,11 +62,11 @@ valid_moves=getPawnmoves(clicked_src,id);
   }
   
   else if (clicked_src.includes("rook")){
-    valid_moves=getRookmoves(clicked_src,id);
+    valid_moves=getRookmoves(id);
   }
   
   else if (clicked_src.includes("knight")){
-    valid_moves=getKnightmoves(clicked_src,id);
+    valid_moves=getKnightmoves(id);
   }
   
   else if (clicked_src.includes("bishop")){
@@ -176,7 +176,6 @@ temp_id.push(id.charAt(0)+"5");
   // for capturing moves i.e. red moves
 
   let temp_index=0;
-  let rival_clr=[];
 
   // resetting temp_id
   temp_id=[];
@@ -191,15 +190,14 @@ temp_index=x_mark.indexOf(id.charAt(0));
     if (temp_index!=0){
     temp_id.push(x_mark[temp_index-1]+(parseInt(id.charAt(1))+1));
 
-      rival_clr.push("white");
+    
     }
 
     // for non seven
         if (temp_index!=7){
     temp_id.push(x_mark[temp_index+1]+(parseInt(id.charAt(1))+1));
         
-        rival_clr.push("white");
-        }
+   }
 
 }
   // white pawn
@@ -208,15 +206,11 @@ temp_index=x_mark.indexOf(id.charAt(0));
     // for non zero
     if (temp_index!=0){
     temp_id.push(x_mark[temp_index-1]+(parseInt(id.charAt(1))-1));
-
-      rival_clr.push("black");
     }  
     
     // for non seven
         if (temp_index!=7){
     temp_id.push(x_mark[temp_index+1]+(parseInt(id.charAt(1))-1));
-
-          rival_clr.push("black");
           
         }
     
@@ -226,9 +220,7 @@ temp_index=x_mark.indexOf(id.charAt(0));
   for(i=0;i<(temp_id.length);i++){
     if (get_element_by_id(temp_id[i])!=null){
       if(has_chess_pieces(temp_id[i])){
-      if (get_element_by_id(temp_id[i]).getElementsByTagName('img').item(0).alt.startsWith(rival_clr[i])){
-
-        console.log(rival_clr[i]);
+      if (!get_element_by_id(temp_id[i]).getElementsByTagName('img').item(0).alt.startsWith(turn_of)){
         valid_moves.push({e:get_element_by_id(temp_id[i]),clr:"red"});
       }
       }
@@ -239,14 +231,127 @@ temp_index=x_mark.indexOf(id.charAt(0));
   return valid_moves;
 }
 
-function getRookmoves(){
+// Contains repetitive code 
+// not able to correct that
+function getRookmoves(id){
+
   let valid_moves=[];
 
+  // getting index
+let x_index=x_mark.indexOf(id.charAt(0));
+let y_index=id.charAt(1);
+  
+  // move along y
+
+  // for (suppose chess pcs at y index 5 then only for 6,7,8 places)
+  for (let i = (parseInt(id.charAt(1))+1); i <= 8; i++){
+    if(!has_chess_pieces(x_mark[x_index]+i)){
+      valid_moves.push({e:get_element_by_id(x_mark[x_index]+i),clr:"green"});
+      
+    }else {
+
+      // checking for opposite color chess pcs
+      if (!get_element_by_id(x_mark[x_index]+i).getElementsByTagName('img').item(0).alt.startsWith(turn_of)){
+        valid_moves.push({e:get_element_by_id(x_mark[x_index]+i),clr:"red"});
+      }
+      
+      break;
+  }
+    
+  }
+
+  // for (suppose chesspcs at y index 5 then only for 1,2,3,4 places)
+
+  for (let i = (parseInt(id.charAt(1))-1); i>=1; i--){
+    if(!has_chess_pieces(x_mark[x_index]+i)){
+      valid_moves.push({e:get_element_by_id(x_mark[x_index]+i),clr:"green"});
+      
+    }else {
+
+      // checking for opposite color chess pcs
+      if (!get_element_by_id(x_mark[x_index]+i).getElementsByTagName('img').item(0).alt.startsWith(turn_of)){
+        valid_moves.push({e:get_element_by_id(x_mark[x_index]+i),clr:"red"});
+      }
+      
+      break;
+    }
+
+  }
+
+  // move along x index
+  // for (suppose chess pcs at y index E then only for F,G,H places)
+  for (let i = (x_index+1); i <= 7; i++){
+    if(!has_chess_pieces(x_mark[i]+y_index)){
+      valid_moves.push({e:get_element_by_id(x_mark[i]+y_index),clr:"green"});
+      
+    }else {
+
+      // checking for opposite color chess pcs
+      if (!get_element_by_id(x_mark[i]+y_index).getElementsByTagName('img').item(0).alt.startsWith(turn_of)){
+        valid_moves.push({e:get_element_by_id(x_mark[i]+y_index),clr:"red"});
+      }
+      
+      break;
+  }
+    
+  }
+
+  // for (suppose chess pcs at y index E then only for A,B,C,D places)
+  for (let i = (x_index-1); i >= 0; i--){
+    if(!has_chess_pieces(x_mark[i]+y_index)){
+      valid_moves.push({e:get_element_by_id(x_mark[i]+y_index),clr:"green"});
+      
+    }else {
+
+      // checking for opposite color chess pcs
+      if (!get_element_by_id(x_mark[i]+y_index).getElementsByTagName('img').item(0).alt.startsWith(turn_of)){
+        valid_moves.push({e:get_element_by_id(x_mark[i]+y_index),clr:"red"});
+      }
+      
+      break;
+  }
+    
+  }
+  
+  
   return valid_moves;
 }
 
-function getKnightmoves(){
+function getKnightmoves(id){
   let valid_moves=[];
+
+  // getting index
+  let xindex=x_mark.indexOf(id.charAt(0));
+  let yindex=id.charAt(1);
+
+  // for all possible moves
+  let temp_id=[];
+
+  // pushing all possible moves
+  temp_id.push(x_mark[xindex-2]+(parseInt(yindex)+1));
+  temp_id.push(x_mark[xindex-2]+(parseInt(yindex)-1));
+  temp_id.push(x_mark[xindex+2]+(parseInt(yindex)+1));
+  temp_id.push(x_mark[xindex+2]+(parseInt(yindex)-1));
+  temp_id.push(x_mark[xindex-1]+(parseInt(yindex)+2));
+  temp_id.push(x_mark[xindex+1]+(parseInt(yindex)+2));
+  temp_id.push(x_mark[xindex-1]+(parseInt(yindex)-2));
+  temp_id.push(x_mark[xindex+1]+(parseInt(yindex)-2));
+
+  console.log(temp_id);
+  // checking the (out of the board moves) and also checking for red moves and moves having same color chess pcs
+  temp_id.forEach((i) =>{
+
+    if (get_element_by_id(i)!=null){
+      if (get_element_by_id(i).getElementsByTagName('img').length>0){
+        if (!get_element_by_id(i).getElementsByTagName('img').item(0).alt.startsWith(turn_of)){
+          valid_moves.push({e:get_element_by_id(i),clr:"red"});
+        }
+      }else {
+        valid_moves.push({e:get_element_by_id(i),clr:"green"});
+      }
+    }
+    
+  })
 
   return valid_moves;
 }
@@ -281,7 +386,6 @@ function move_pcs(element){
 let elem = document.createElement("img");
 elem.setAttribute("src", src);
 elem.setAttribute("alt",alt);
-  console.log(elem)
 element.appendChild(elem);
 
   // special condition for red moves
